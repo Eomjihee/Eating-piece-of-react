@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({onCreate}) => {
   
   // 굳이 두개로 구분하지 않고 하나로 통일하여 사용
   // const [author, setAuthor] = useState('');
@@ -38,8 +38,19 @@ const DiaryEditor = () => {
       refContents.current.focus();
       return;
     }
+    //----- 저장 기능
+    onCreate(state.author,state.contents, state.emotion);
     alert('저장 완료');
+    resetState();
   }; 
+  const resetState = () => {
+    setState({
+      author: '',
+      contents : '',
+      emotion: 3
+    });
+  }
+  
   return (
     <div className="DiaryEditor">
       {/* 작성자, 일기 본문, 감정 점수 */}
