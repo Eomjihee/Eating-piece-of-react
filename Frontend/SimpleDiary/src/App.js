@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
 
-  const [data, setState] = useState([]);
+  const [data, setData] = useState([]);
   const dataId = useRef(0)
   const onCreate = (author, contents, emotion) => {
     const create_date = new Date().getTime();
@@ -17,17 +17,23 @@ function App() {
       create_date
     }
     dataId.current += 1;
-    setState([...data, {...newItem}]);
+    setData([...data, {...newItem}]);
   }
 
-  const onDelete = (targetId) => {
-    setState([...data.filter((diary)=> diary.id !== targetId)])
+  const onEdit = (targetId, newContents) => {
+    setData(
+      data.map(diary => diary.id === targetId ? {...diary, contents: newContents} : {...diary})
+    )
+  }
+
+  const onRemove = (targetId) => {
+    setData([...data.filter((diary)=> diary.id !== targetId)])
   }
 
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate}/>
-      <DiaryList onDelete={onDelete} listArr={data}/>
+      <DiaryList onRemove={onRemove} onEdit={onEdit} listArr={data}/>
     </div>
   );
 }
