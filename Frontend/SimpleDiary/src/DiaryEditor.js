@@ -1,7 +1,16 @@
-import { useState, useRef } from "react";
+import React,{ useEffect, useState, useRef } from "react";
 
 const DiaryEditor = ({onCreate}) => {
-  
+  useEffect(()=> {
+    // 언제 렌더 되는지 확인
+    console.log('[Comp.DiaryEditor] ------ start');
+    /* 왜 두번 렌더되는가? 
+      App 컴포넌트에서 data가 처음 빈배열로 초기화되었다가 
+      변경되면서 두번 렌더링.
+      onCreate가 재생성되지 않아야만 최적화 가능.
+    */
+
+  });
   // 굳이 두개로 구분하지 않고 하나로 통일하여 사용
   // const [author, setAuthor] = useState('');
   // const [contents, setContents] = useState('');
@@ -95,4 +104,4 @@ const DiaryEditor = ({onCreate}) => {
     </div>
   );
 };
-export default DiaryEditor;
+export default React.memo(DiaryEditor);

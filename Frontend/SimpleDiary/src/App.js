@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./List/DiaryList";
 import "./App.css";
-import OptimizeTest from "./OptimizeTest";
 
 function App() {
   const [data, setData] = useState([]);
@@ -28,7 +27,9 @@ function App() {
     getData();
   }, []);
 
-  const onCreate = (author, contents, emotion) => {
+  const onCreate = useCallback((author, contents, emotion) => {
+    // 최적화를 위한 작업 중 memo 기능은 값으로 반환하므로 사용하지 말 것
+    // Hooks 중 useCallback 함수 사용 : 메모이제이션 된 콜백을 반환
     const create_date = new Date().getTime();
     const newItem = {
       id: dataId.current,
@@ -38,22 +39,31 @@ function App() {
       create_date,
     };
     dataId.current += 1;
-    setData([...data, { ...newItem }]);
-  };
+    // 이 때 data는 초기 선언된 빈 배열의 state값을 들고있어 빈 배열로 전달됨
+    // setData([...data, { ...newItem }]);
+    // 최신의 state를 반영하기 위해 함수형 업데이트(함수를 전달)를 해주어야함
+    setData((data)=>[{...newItem}, ...data]); 
+    // 원리는.. 함수 인자를 통해 data를 받는 시점에 참조하므로..?
+  },
+  []);
 
-  const onEdit = (targetId, newContents) => {
+  const onEdit = useCallback((targetId, newContents) => {
     setData(
-      data.map((diary) =>
+      (data) => data.map((diary) =>
         diary.id === targetId
           ? { ...diary, contents: newContents }
           : { ...diary }
       )
     );
-  };
+  },
+  []
+  );
 
-  const onRemove = (targetId) => {
-    setData([...data.filter((diary) => diary.id !== targetId)]);
-  };
+  const onRemove = useCallback((targetId) => {
+    setData(data=>[...data.filter((diary) => diary.id !== targetId)]);
+  },
+  []
+  );
 
   // useMemo
   const getDiaryAnalysis = useMemo(() => {
@@ -70,9 +80,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* 컴포넌트 재사용 테스트용 */}
-      <OptimizeTest />
-      {/* 컴포넌트 재사용 테스트용 */}
       <DiaryEditor onCreate={onCreate} />
       <div>전체 일기 : {data.length}</div>
       <div>기분 좋은 날 : {goodCount}</div>
