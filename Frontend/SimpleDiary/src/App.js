@@ -1,10 +1,35 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import React, { useReducer, useRef, useEffect, useMemo, useCallback } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./List/DiaryList";
 import "./App.css";
 
+const reducer = (prevState, action) => {
+  switch (action.type) {
+    case 'INIT':{
+      return action.data;
+    }
+    case 'CREATE':{
+      const create_date = new Date().getTime();
+      const newItem = {
+        ...action.data,
+        create_date,
+      }
+      return [newItem, ...prevState];
+    }
+    case 'REMOVE':
+      return prevState.filter((diary) => diary.id !== action.targetId);
+    case 'EDIT':
+      return prevState.map(diary => diary.id === action.targetId ? {...diary, contents : action.newContents } : diary )
+    default:
+      return prevState;
+  }
+};
+
 function App() {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+  // useState가 아닌 useReducer를 통해 상태변화 관리
+  const [data, dispatch] = useReducer(reducer,[])
+
   const dataId = useRef(0);
   const getData = async () => {
     const res = await fetch(
@@ -19,8 +44,8 @@ function App() {
         id: dataId.current++,
       };
     });
-
-    setData(initData);
+    dispatch({type:'INIT', data:initData});
+    // setData(initData);
   };
 
   useEffect(() => {
@@ -30,37 +55,49 @@ function App() {
   const onCreate = useCallback((author, contents, emotion) => {
     // 최적화를 위한 작업 중 memo 기능은 값으로 반환하므로 사용하지 말 것
     // Hooks 중 useCallback 함수 사용 : 메모이제이션 된 콜백을 반환
-    const create_date = new Date().getTime();
-    const newItem = {
-      id: dataId.current,
-      author,
-      contents,
-      emotion,
-      create_date,
-    };
-    dataId.current += 1;
+    // const create_date = new Date().getTime();
+    // const newItem = {
+    //   id: dataId.current,
+    //   author,
+    //   contents,
+    //   emotion,
+    //   create_date,
+    // };
+    // dataId.current += 1;
     // 이 때 data는 초기 선언된 빈 배열의 state값을 들고있어 빈 배열로 전달됨
     // setData([...data, { ...newItem }]);
     // 최신의 state를 반영하기 위해 함수형 업데이트(함수를 전달)를 해주어야함
-    setData((data)=>[{...newItem}, ...data]); 
+    // setData((data)=>[{...newItem}, ...data]); 
     // 원리는.. 함수 인자를 통해 data를 받는 시점에 참조하므로..?
+
+    dispatch({type:'CREATE', 
+      data: {
+        id: dataId.current,
+        author,
+        contents,
+        emotion
+      }
+    });
+    dataId.current += 1;
   },
   []);
 
   const onEdit = useCallback((targetId, newContents) => {
-    setData(
-      (data) => data.map((diary) =>
-        diary.id === targetId
-          ? { ...diary, contents: newContents }
-          : { ...diary }
-      )
-    );
+    // setData(
+    //   (data) => data.map((diary) =>
+    //     diary.id === targetId
+    //       ? { ...diary, contents: newContents }
+    //       : { ...diary }
+    //   )
+    // );
+    dispatch({type: 'EDIT', targetId, newContents});
   },
   []
   );
 
   const onRemove = useCallback((targetId) => {
-    setData(data=>[...data.filter((diary) => diary.id !== targetId)]);
+    // setData(data=>[...data.filter((diary) => diary.id !== targetId)]);
+    dispatch({type: 'REMOVE', targetId })
   },
   []
   );
