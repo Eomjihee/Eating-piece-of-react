@@ -1,16 +1,11 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect, useContext} from 'react'
+import { DiaryDispatchContext } from '../App';
 const DiaryItem = ({ 
-  onRemove, onEdit, // App 컴포넌트로부터 받은 함수 
   id, author, create_date, emotion, // 변경X 데이터
   contents,  // 변경 가능한 데이터
 }) => {
 
-  useEffect(()=>{
-    // rerender 확인
-    console.log(`[Comp.DiaryItem] ${id}번째 아이템 렌더`);
-    // React.memo만 한다고 바로 최적화 되지 않는 이유 : data state가 변화하면 리렌더할 수 밖에 없음 
-    // onCreate 최적화와 동일하게 onRemove, onEdit 최적화 필요
-  });
+  const {onRemove, onEdit} = useContext(DiaryDispatchContext);
   // --- 수정하기 기능
   // 현재 수정 중인지 수정 중이 아닌지 불리언 값으로 저장
   const [isEdit, setIsEdit] = useState(false);
