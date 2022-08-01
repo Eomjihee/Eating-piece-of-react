@@ -39,3 +39,52 @@ body{
   min-height: 80vh;
   padding: 20px 40px 40px 40px;
 }
+
+/* MyButton */
+.MyButton {
+  cursor: pointer;
+  border : none;
+  border-radius: 4px;
+  padding: 8px 20px 10px 20px;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  margin: 2px 4px 2px 4px;
+}
+.MyButton_default {
+  background-color: #f6f6f6;
+}
+.MyButton_positive {
+  background-color: #8aa7f5;
+}
+.MyButton_negative {
+  background-color: #faa0a0;
+}
+
+/* MyHeader */
+
+header{
+  padding: 20px 0px 20px 0px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e2e2e2;
+}
+header > div { 
+  display: flex;
+}
+header .head_text {
+  width: 50%;
+  font-size: 24px;
+  justify-content: center;
+}
+header .head_btn_left {
+  width: 25%;
+  justify-content: start;
+}
+header .head_btn_right {
+  width: 25%;
+  justify-content: end;
+}
+header button {
+  font-family: 'Noto Sans KR', sans-serif;
+}

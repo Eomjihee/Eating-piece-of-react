@@ -4,14 +4,35 @@ import Create from './pages/Create';
 import Diary from './pages/Diary';
 import Edit from './pages/Edit';
 import Home from './pages/Home';
-import RouteTest from './components/RouteTest';
+
+// components
+import MyButton from './components/MyButton';
+import MyHeader from './components/MyHeader';
 
 function App() {
+  
   return (
     <BrowserRouter>
     <div className="App">
+      <MyHeader 
+        headText={'App'}
+        leftBtn={<MyButton text={'LEFT'} onClick={()=> alert('LEFT CLICK!!')}/>}
+        rightBtn={<MyButton text={'RIGHT'} onClick={()=> alert('RIGHT CLICK!!')}/>}
+      />
       <h2>App.js</h2>
-      <RouteTest />
+      <MyButton 
+        text={'버튼'}
+        type={'default'}
+        onClick={()=>alert('버튼 클릭')}
+      />
+      <MyButton 
+        type={'positive'}
+        onClick={()=>alert('버튼 클릭')}
+      />
+      <MyButton 
+        type={'negative'}
+        onClick={()=>alert('버튼 클릭')}
+      />
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/create' element={<Create/>} />
