@@ -29,9 +29,46 @@ const reducer = (state, action) => {
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
+const dummyData = [
+  {
+    id:1,
+    emotion : 4,
+    content : `오늘의 일기 1번`,
+    date : 1659496147905
+  },
+  {
+    id:2,
+    emotion : 2,
+    content : `오늘의 일기 2번`,
+    date : 1659496172494
+  },
+  {
+    id:3,
+    emotion : 6,
+    content : `오늘의 일기 3번`,
+    date : 1659496222787
+  },
+  {
+    id:4,
+    emotion : 1,
+    content : `오늘의 일기 4번`,
+    date : 1659496230676
+  },
+  {
+    id:5,
+    emotion : 5,
+    content : `오늘의 일기 5번`,
+    date : 1659496250687
+  },
+  {
+    id:6,
+    emotion : 2,
+    content : `오늘의 일기 6번`,
+    date : 1689496250687
+  },
+]
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
-
+  const [data, dispatch] = useReducer(reducer, dummyData);
   const dataId = useRef(0);
   // CREATE
   const onCreate = (date, content, emotion) => {
@@ -74,7 +111,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='/create' element={<Create/>} />
-            <Route path='/edit' element={<Edit/>} />
+            <Route path='/edit/:id' element={<Edit/>} />
             <Route path='/diary/:id' element={<Diary/>} />
           </Routes>
         </div>
