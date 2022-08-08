@@ -18,11 +18,12 @@ const Home = () => {
     
     //console.log('    [firstDay, lastDay] : ',new Date(firstDay), new Date(lastDay));
     // 각 달에 맞는 데이터만 출력
+    console.log('    [diaryList] : ',diaryList, firstDay, lastDay, diaryList.filter((diaryItem)=> firstDay <= diaryItem.date && diaryItem.date <= lastDay));
     setData(diaryList.filter((diaryItem)=> firstDay <= diaryItem.date && diaryItem.date <= lastDay))
   
   },[diaryList, curDate]);
   useEffect(()=>{
-    console.log(data);
+    console.log('[Home.js] useEffect - data : ',data);
   },[data]);
   
   const increaseMonth = () =>{

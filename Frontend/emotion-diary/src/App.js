@@ -13,7 +13,7 @@ const reducer = (state, action) => {
       return action.data;
     case 'CREATE' :
       newState = [{...action.data}, ...state];
-      break;
+      return newState;
     case 'REMOVE' :
       newState = state.filter(diary => diary.id !== action.targetId)
       break;
@@ -34,7 +34,7 @@ const dummyData = [
     id:1,
     emotion : 4,
     content : `오늘의 일기 1번`,
-    date : 1659496147905
+    date : 1658496140905
   },
   {
     id:2,
@@ -64,7 +64,7 @@ const dummyData = [
     id:6,
     emotion : 2,
     content : `오늘의 일기 6번`,
-    date : 1689496250687
+    date : 1659896290687
   },
 ]
 function App() {
@@ -74,9 +74,9 @@ function App() {
   const onCreate = (date, content, emotion) => {
     dispatch({type : 'CREATE', data: {
       id : dataId.current,
-      data : new Date(date).getTime(),
+      emotion,
       content,
-      emotion
+      date : new Date(date).getTime()
     }});
     dataId.current += 1;
   }
