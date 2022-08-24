@@ -16,10 +16,10 @@ const reducer = (state, action) => {
       return newState;
     case 'REMOVE' :
       newState = state.filter(diary => diary.id !== action.targetId)
-      break;
+      return newState;
     case 'EDIT' :
       newState = state.map(diary => diary.id === action.data.id ? {...action.data} : diary)
-      break;
+      return newState;
     default:
       return state;
   }
@@ -95,6 +95,7 @@ function App() {
         emotion
       }
     });
+    console.log('    [onEdit] data : ',data, targetId,date, content, emotion);
   }
 
   return (
