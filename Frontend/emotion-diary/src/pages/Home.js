@@ -17,9 +17,9 @@ const Home = () => {
     // 마지막날의 경우 시분초까지 입력해주어야 오류없이 출력됨
     const lastDay= new Date(curDate.getFullYear(), curDate.getMonth()+1, 0, 23, 59, 59).getTime();
     
-    //console.log('    [firstDay, lastDay] : ',new Date(firstDay), new Date(lastDay));
+    // console.log('    [firstDay, lastDay] : ',new Date(firstDay), new Date(lastDay));
+    // console.log('    [diaryList] : ',diaryList, firstDay, lastDay, diaryList.filter((diaryItem)=> firstDay <= diaryItem.date && diaryItem.date <= lastDay));
     // 각 달에 맞는 데이터만 출력
-    console.log('    [diaryList] : ',diaryList, firstDay, lastDay, diaryList.filter((diaryItem)=> firstDay <= diaryItem.date && diaryItem.date <= lastDay));
     setData(diaryList.filter((diaryItem)=> firstDay <= diaryItem.date && diaryItem.date <= lastDay))
   
   },[diaryList, curDate]);
