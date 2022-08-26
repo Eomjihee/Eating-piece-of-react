@@ -14,7 +14,8 @@ const Home = () => {
   
   useEffect(()=>{
     const firstDay= new Date(curDate.getFullYear(), curDate.getMonth(), 1).getTime();
-    const lastDay= new Date(curDate.getFullYear(), curDate.getMonth()+1, 0).getTime();
+    // 마지막날의 경우 시분초까지 입력해주어야 오류없이 출력됨
+    const lastDay= new Date(curDate.getFullYear(), curDate.getMonth()+1, 0, 23, 59, 59).getTime();
     
     //console.log('    [firstDay, lastDay] : ',new Date(firstDay), new Date(lastDay));
     // 각 달에 맞는 데이터만 출력
