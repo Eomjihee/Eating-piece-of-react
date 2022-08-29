@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DiaryItem from "./DiaryItem";
 import MyButton from "./MyButton";
@@ -13,7 +13,8 @@ const emotionFilterOpt = [
   { value: "bad", name: "부정적 감정" },
 ];
 
-const ControlMenu = ({ value, onChange, optionList }) => {
+// 컴포넌트 하나를 인자로 받아 강화된 컴포넌트를 전달하는 고착 컴포넌트 함수인 React.memo 사용
+const ControlMenu = React.memo(({ value, onChange, optionList }) => {
   return (
     <select
       className="ControlMenu"
@@ -27,7 +28,7 @@ const ControlMenu = ({ value, onChange, optionList }) => {
       ))}
     </select>
   );
-};
+});
 
 const DiaryList = ({ diaryList }) => {
   const navigate = useNavigate();

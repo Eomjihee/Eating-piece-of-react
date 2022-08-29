@@ -1,4 +1,4 @@
-import {useRef, useState, useContext, useEffect} from 'react';
+import {useRef, useState, useContext, useEffect, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import {DiaryDispatchContext} from "./../App.js";
@@ -10,14 +10,19 @@ import { getStrDate }from '../utils/date'
 import { emotionList }from '../utils/emotion'
 
 const DiaryEditor = ({isEdit, originData}) => {
+  
+  const contentRef = useRef()
+  const [content, setContent] = useState('')
   const [date, setDate] = useState(getStrDate(new Date()));
-  const navigate = useNavigate();
   const [emotionNum, setEmotionNum]= useState(3);
   const {onCreate, onEdit, onRemove} = useContext(DiaryDispatchContext)
+  
+  const navigate = useNavigate();
 
-  const handleClickEmotion = (emotion) => {
+  const handleClickEmotion = useCallback((emotion) => {
+    // useCallback 복습 필요 6-12
     setEmotionNum(emotion);
-  }
+  },[]);
   const handleSubmit = () => {
     if(content.length < 5){
       contentRef.current.focus();
@@ -50,8 +55,6 @@ const DiaryEditor = ({isEdit, originData}) => {
     }
   },[isEdit, originData])
 
-  const contentRef = useRef()
-  const [content, setContent] = useState('')
 
 
   const env = process.env;
